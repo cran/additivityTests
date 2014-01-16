@@ -1,6 +1,6 @@
-#' Tussel Additivity Test
+#' Tusell Additivity Test
 #' 
-#' Test for an interaction in two-way ANOVA table by the Tussel test.
+#' Test for an interaction in two-way ANOVA table by the Tusell test.
 #'
 #' @param Y data matrix
 #' @param alpha level of the test
@@ -26,9 +26,9 @@
 #' 
 #' @examples
 #' data(Boik)
-#' tussel.test(Boik)
+#' tusell.test(Boik)
 
-`tussel.test` <-
+`tusell.test` <-
 function(Y,alpha=0.05,critical.value=NA,Nsim=1000)
 {
 
@@ -44,8 +44,8 @@ function(Y,alpha=0.05,critical.value=NA,Nsim=1000)
   S<-R %*% t(R)
   vl.cisla<-eigen(S / sum(diag(S)),only.values = TRUE)$values
 
-  if (prod(vl.cisla[1:p])<critical.value)  out<-list(result=TRUE,stat=prod(vl.cisla[1:p]),critical.value=critical.value,alpha=alpha,name="Tussel test") # zamitame aditivitu
-                             else  out<-list(result=FALSE,stat=prod(vl.cisla[1:p]),critical.value=critical.value,alpha=alpha,name="Tussel test") # nezamitame aditivitu
+  if (prod(vl.cisla[1:p])<critical.value)  out<-list(result=TRUE,stat=prod(vl.cisla[1:p]),critical.value=critical.value,alpha=alpha,name="Tusell test") # zamitame aditivitu
+                             else  out<-list(result=FALSE,stat=prod(vl.cisla[1:p]),critical.value=critical.value,alpha=alpha,name="Tusell test") # nezamitame aditivitu
 
   class(out)<-"aTest"
   return(out)

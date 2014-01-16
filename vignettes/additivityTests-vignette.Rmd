@@ -1,8 +1,10 @@
-# additivityTests
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Testing for interaction in two-way ANOVA with no replication}
+-->
 
-additivityTests is R package for additivity tests in the two way ANOVA with just one observation per cell.
-
-## Introduction
+# Testing for interaction in two-way ANOVA with no replication
+========================================================
 
 In many applications of statistical methods, it is assumed that the response
 variable is a sum of several factors and a random noise. In a real world this may
@@ -22,7 +24,8 @@ Tukey test, modified Tukey test, Johnson-Graybill test, LBI test, Mandel test an
 
 Let us generate 10 random subjects, 10 random treatmeants and combine them into a dataset (with no interaction):
 
-```S
+```{r 'generating data with no interaction'}
+    require(additivityTests)
     set.seed(123)
     subjects = rnorm(10)
     treatments = rnorm(10)
@@ -32,7 +35,7 @@ Let us generate 10 random subjects, 10 random treatmeants and combine them into 
 
 The tests should **not** reject the additive hypothesis: 
 
-```S
+```{r 'testing for interaction'}
     tukey.test(Y)
     mandel.test(Y)
     lbi.test(Y)
@@ -44,7 +47,7 @@ The tests should **not** reject the additive hypothesis:
 
 Now, the extra effect will be added to the last 5 subjects. The tests **should** reject the additive hypothesis:   
 
-```S
+```{r 'adding interaction and testing again'}
     Y[1:5,] = Y[1:5,] + 10*rep(treatments, each=5)
     
     tukey.test(Y)
@@ -55,18 +58,6 @@ Now, the extra effect will be added to the last 5 subjects. The tests **should**
     mandel.test(Y)
     mtukey.test(Y, correction=2, Nboot=1000)
 ```
-
-## Installation
-
-To install the additivityTests from Github, it's easiest to use the `devtools` package:
-
-```S
-    # install.packages("devtools")
-    library(devtools)
-    install_github("rakosnicek/additivityTests")
-```    
-
-Or you can access the stable package version available on [[CRAN]](http://cran.r-project.org/web/packages/additivityTests/)
 
 ## References
 

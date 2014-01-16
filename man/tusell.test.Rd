@@ -1,17 +1,20 @@
-\name{mandel.test}
-\alias{mandel.test}
-\title{Mandel Additivity Test}
+\name{tusell.test}
+\alias{tusell.test}
+\title{Tusell Additivity Test}
 \usage{
-mandel.test(data, alpha = 0.05, critical.value = NA)
+tusell.test(Y, alpha = 0.05, critical.value = NA, Nsim = 1000)
 }
 \arguments{
-  \item{data}{data matrix}
+  \item{Y}{data matrix}
 
   \item{alpha}{level of the test}
 
   \item{critical.value}{result of
   \code{\link{critical.values}} function, see
   \code{Details}}
+
+  \item{Nsim}{number of simulations to be used for a
+  critical value estimation}
 }
 \value{
 A list with class "\code{aTest}" containing the following
@@ -22,7 +25,7 @@ been rejected.
 }
 \description{
 Test for an interaction in two-way ANOVA table by the
-Mandel test.
+Tusell test.
 }
 \details{
 The critical value can be computed in advance and given in
@@ -31,17 +34,17 @@ the parameter \code{critical value}. If not a function
 }
 \examples{
 data(Boik)
-mandel.test(Boik)
+tusell.test(Boik)
 }
 \references{
-Mandel, J.: Non-additivity in Two-way Analysis of Variance,
-\emph{Journal of the American Statistical Association}
-\bold{56}, pp. 878--888, 1961.
+Tusell, F.: Testing for Interaction in Two-way ANOVA Tables
+with no Replication, \emph{Computational Statistics \& Data
+Analysis} \bold{10}, pp. 29--45, 1990
 }
 \seealso{
 \code{\link{tukey.test}}, \code{\link{mtukey.test}},
-\code{\link{johnson.graybill.test}},
-\code{\link{lbi.test}}, \code{\link{tusell.test}}
+\code{\link{mandel.test}}, \code{\link{lbi.test}},
+\code{\link{johnson.graybill.test}}
 }
 \keyword{htest}
 
