@@ -4,7 +4,7 @@
 \alias{Boik}
 \title{Multi-headed Machine Data}
 \source{
-Robert J. Boik: A comparison of three invariant tests of additivity in two-way classifications with no replications, Computational Statistics \& Data Analysis, 1993.
+Robert J. Boik: A comparison of three invariant tests of additivity in two-way classifications with no replications, Computational Statistics & Data Analysis, 1993.
 }
 \usage{
 data(Boik)

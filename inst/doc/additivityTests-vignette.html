@@ -5,6 +5,18 @@
 
 <title>Testing for interaction in two-way ANOVA with no replication</title>
 
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
    pre .operator,
@@ -13,19 +25,21 @@
    }
 
    pre .literal {
-     color: rgb(88, 72, 246)
+     color: #990073
    }
 
    pre .number {
-     color: rgb(0, 0, 205);
+     color: #099;
    }
 
    pre .comment {
-     color: rgb(76, 136, 107);
+     color: #998;
+     font-style: italic
    }
 
    pre .keyword {
-     color: rgb(0, 0, 255);
+     color: #900;
+     font-weight: bold
    }
 
    pre .identifier {
@@ -33,7 +47,7 @@
    }
 
    pre .string {
-     color: rgb(3, 106, 7);
+     color: #d14;
    }
 </style>
 
@@ -43,64 +57,71 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 
 <style type="text/css">
 body, td {
    font-family: sans-serif;
    background-color: white;
-   font-size: 12px;
-   margin: 8px;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
 }
 
 tt, code, pre {
    font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
 
-h1 { 
-   font-size:2.2em; 
+h1 {
+   font-size:2.2em;
 }
 
-h2 { 
-   font-size:1.8em; 
+h2 {
+   font-size:1.8em;
 }
 
-h3 { 
-   font-size:1.4em; 
+h3 {
+   font-size:1.4em;
 }
 
-h4 { 
-   font-size:1.0em; 
+h4 {
+   font-size:1.0em;
 }
 
-h5 { 
-   font-size:0.9em; 
+h5 {
+   font-size:0.9em;
 }
 
-h6 { 
-   font-size:0.8em; 
+h6 {
+   font-size:0.8em;
 }
 
 a:visited {
    color: rgb(50%, 0%, 50%);
 }
 
-pre {	
-   margin-top: 0;
-   max-width: 95%;
-   border: 1px solid #ccc;
-   white-space: pre-wrap;
+pre, img {
+  max-width: 100%;
 }
-
+pre {
+  overflow-x: auto;
+}
 pre code {
    display: block; padding: 0.5em;
 }
 
-code.r, code.cpp {
-   background-color: #F8F8F8;
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
 }
 
 table, td, th {
@@ -123,54 +144,54 @@ hr {
 }
 
 @media print {
-   * { 
-      background: transparent !important; 
-      color: black !important; 
-      filter:none !important; 
-      -ms-filter: none !important; 
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
    }
 
-   body { 
-      font-size:12pt; 
-      max-width:100%; 
-   }
-       
-   a, a:visited { 
-      text-decoration: underline; 
+   body {
+      font-size:12pt;
+      max-width:100%;
    }
 
-   hr { 
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
       visibility: hidden;
       page-break-before: always;
    }
 
-   pre, blockquote { 
-      padding-right: 1em; 
-      page-break-inside: avoid; 
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
    }
 
-   tr, img { 
-      page-break-inside: avoid; 
+   tr, img {
+      page-break-inside: avoid;
    }
 
-   img { 
-      max-width: 100% !important; 
+   img {
+      max-width: 100% !important;
    }
 
-   @page :left { 
-      margin: 15mm 20mm 15mm 10mm; 
-   }
-     
-   @page :right { 
-      margin: 15mm 10mm 15mm 20mm; 
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
    }
 
-   p, h2, h3 { 
-      orphans: 3; widows: 3; 
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
    }
 
-   h2, h3 { 
-      page-break-after: avoid; 
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
    }
 }
 </style>
@@ -207,172 +228,176 @@ Tukey test, modified Tukey test, Johnson-Graybill test, LBI test, Mandel test an
 
 <p>Let us generate 10 random subjects, 10 random treatmeants and combine them into a dataset (with no interaction):</p>
 
-<pre><code class="r">require(additivityTests)
-set.seed(123)
-subjects = rnorm(10)
-treatments = rnorm(10)
-noise = rnorm(100)/100
-Y = matrix(rep(subjects, 10), 10, 10) + matrix(rep(treatments, each = 10), 10, 
-    10) + noise
+<pre><code class="r">    require(additivityTests)
+</code></pre>
+
+<pre><code>## Loading required package: additivityTests
+</code></pre>
+
+<pre><code class="r">    set.seed(123)
+    subjects = rnorm(10)
+    treatments = rnorm(10)
+    noise = rnorm(100)/100
+    Y = matrix(rep(subjects,10), 10, 10) + matrix(rep(treatments, each=10), 10, 10) + noise
 </code></pre>
 
 <p>The tests should <strong>not</strong> reject the additive hypothesis: </p>
 
-<pre><code class="r">tukey.test(Y)
+<pre><code class="r">    tukey.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Tukey test on 5% alpha-level:
 ## 
-## Test statistic: 2.02 
+## Test statistic: 2.016 
 ## Critival value: 3.96 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">mandel.test(Y)
+<pre><code class="r">    mandel.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Mandel test on 5% alpha-level:
 ## 
-## Test statistic: 1.39 
-## Critival value: 2.01 
+## Test statistic: 1.394 
+## Critival value: 2.013 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">lbi.test(Y)
+<pre><code class="r">    lbi.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Locally Best Invariant test on 5% alpha-level:
 ## 
-## Test statistic: 0.232 
-## Critival value: 0.273 
+## Test statistic: 0.2316 
+## Critival value: 0.2729 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">tusell.test(Y)
+<pre><code class="r">    tusell.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Tusell test on 5% alpha-level:
 ## 
-## Test statistic: 2.83e-13 
-## Critival value: 5.28e-16 
+## Test statistic: 2.833e-13 
+## Critival value: 5.281e-16 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">johnson.graybill.test(Y)
+<pre><code class="r">    johnson.graybill.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Johnson and Graybill test on 5% alpha-level:
 ## 
-## Test statistic: 0.325 
-## Critival value: 0.438 
+## Test statistic: 0.3252 
+## Critival value: 0.4375 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">mandel.test(Y)
+<pre><code class="r">    mandel.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Mandel test on 5% alpha-level:
 ## 
-## Test statistic: 1.39 
-## Critival value: 2.01 
+## Test statistic: 1.394 
+## Critival value: 2.013 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
-<pre><code class="r">mtukey.test(Y, correction = 2, Nboot = 1000)
+<pre><code class="r">    mtukey.test(Y, correction=2, Nboot=1000)
 </code></pre>
 
 <pre><code>## 
 ## Modified Tukey test (small sample size correction, type 2) on 5% alpha-level:
 ## 
-## Test statistic: 0.509 
-## Critival value: 0.923 
+## Test statistic: 0.5091 
+## Critival value: 0.9232 
 ## The additivity hypothesis cannot be rejected.
 </code></pre>
 
 <p>Now, the extra effect will be added to the last 5 subjects. The tests <strong>should</strong> reject the additive hypothesis:   </p>
 
-<pre><code class="r">Y[1:5, ] = Y[1:5, ] + 10 * rep(treatments, each = 5)
+<pre><code class="r">    Y[1:5,] = Y[1:5,] + 10*rep(treatments, each=5)
 
-tukey.test(Y)
+    tukey.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Tukey test on 5% alpha-level:
 ## 
-## Test statistic: 134 
+## Test statistic: 134.2 
 ## Critival value: 3.96 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">mandel.test(Y)
+<pre><code class="r">    mandel.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Mandel test on 5% alpha-level:
 ## 
 ## Test statistic: 3377187 
-## Critival value: 2.01 
+## Critival value: 2.013 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">lbi.test(Y)
+<pre><code class="r">    lbi.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Locally Best Invariant test on 5% alpha-level:
 ## 
 ## Test statistic: 1 
-## Critival value: 0.27 
+## Critival value: 0.2704 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">tusell.test(Y)
+<pre><code class="r">    tusell.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Tusell test on 5% alpha-level:
 ## 
-## Test statistic: 1.55e-57 
-## Critival value: 5.42e-16 
+## Test statistic: 1.548e-57 
+## Critival value: 5.424e-16 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">johnson.graybill.test(Y)
+<pre><code class="r">    johnson.graybill.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Johnson and Graybill test on 5% alpha-level:
 ## 
 ## Test statistic: 1 
-## Critival value: 0.438 
+## Critival value: 0.4382 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">mandel.test(Y)
+<pre><code class="r">    mandel.test(Y)
 </code></pre>
 
 <pre><code>## 
 ## Mandel test on 5% alpha-level:
 ## 
 ## Test statistic: 3377187 
-## Critival value: 2.01 
+## Critival value: 2.013 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
-<pre><code class="r">mtukey.test(Y, correction = 2, Nboot = 1000)
+<pre><code class="r">    mtukey.test(Y, correction=2, Nboot=1000)
 </code></pre>
 
 <pre><code>## 
 ## Modified Tukey test (small sample size correction, type 2) on 5% alpha-level:
 ## 
-## Test statistic: 433 
-## Critival value: 1.15 
+## Test statistic: 432.9 
+## Critival value: 1.152 
 ## The additivity hypothesis was rejected.
 </code></pre>
 
