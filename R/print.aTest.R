@@ -3,7 +3,7 @@
 #' Print the results of additivity test.
 #'
 #' @param x aTest object
-#' @param how many significant digits are to be used
+#' @param digits many significant digits are to be used
 #' 
 #' @keywords internal
 #'

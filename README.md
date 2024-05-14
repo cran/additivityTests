@@ -66,10 +66,10 @@ To install the additivityTests from Github, it's easiest to use the `devtools` p
     install_github("simecek/additivityTests")
 ```    
 
-Or you can access the stable package version available on [[CRAN]](http://cran.r-project.org/web/packages/additivityTests/)
+Or you can access the stable package version available on [[CRAN]](https://cran.r-project.org/package=additivityTests)
 
 ## References
 
-Simecek, Petr and Simeckova, Marie. "Modification of Tukey's additivity test." Journal of Statistical Planning and Inference (2012). [[ScienceDirect]](http://www.sciencedirect.com/science/article/pii/S037837581200239X) [[arXiv]](http://arxiv.org/abs/1207.2883)
+Simecek, Petr and Simeckova, Marie. "Modification of Tukey's additivity test." Journal of Statistical Planning and Inference (2012). [[ScienceDirect]](https://www.sciencedirect.com/science/article/pii/S037837581200239X) [[arXiv]](http://arxiv.org/abs/1207.2883)
 
-Rasch, Dieter, et al. "Tests of additivity in mixed and fixed effect two-way ANOVA models with single sub-class numbers." Statistical Papers 50.4 (2009): 905-916. [[Springer]](http://rd.springer.com/article/10.1007/s00362-009-0254-4#page-1)
+Rasch, Dieter, et al. "Tests of additivity in mixed and fixed effect two-way ANOVA models with single sub-class numbers." Statistical Papers 50.4 (2009): 905-916. [[Springer]](https://rd.springer.com/article/10.1007/s00362-009-0254-4#page-1)

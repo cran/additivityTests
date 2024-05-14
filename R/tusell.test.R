@@ -15,7 +15,7 @@
 #' If not a function  \code{\link{critical.values}} is called to do that.
 #' 
 #' @references Tusell, F.: Testing for Interaction in Two-way ANOVA Tables with no Replication, 
-#' \emph{Computational Statistics \& Data Analysis} \bold{10}, pp. 29--45, 1990
+#' \emph{Computational Statistics & Data Analysis} \bold{10}, pp. 29--45, 1990
 #' 
 #' @seealso \code{\link{tukey.test}}, \code{\link{mtukey.test}}, \code{\link{mandel.test}}, 
 #' \code{\link{lbi.test}}, \code{\link{johnson.graybill.test}}
